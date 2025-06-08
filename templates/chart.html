@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AIRGO Monitoring System</title>
+
+  <!-- Bootstrap & FontAwesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- ✅ Chart.js v3.9.1 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+  <!-- ✅ chartjs-chart-gauge v2.0.0 (Kompatibel dengan Chart.js v3) -->
+
+
+  <!-- Optional: Script Flask -->
+  <script src="{{ url_for('static', filename='chart.js') }}"></script>
+
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <h2 class="text-center mb-4">AIRGO Monitoring Dashboard</h2>
+
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-header">Suhu</div>
+          <div class="card-body">
+            <canvas id="gaugeSuhu" height="200"></canvas>
+            <p id="suhu" class="mt-2 fw-bold">--</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Inline untuk uji coba -->
+  <script>
+    const ctx = document.getElementById("gaugeSuhu").getContext("2d");
+    const chart = new Chart(ctx, {
+      type: 'gauge',
+      data: {
+        labels: ['Dingin', 'Normal', 'Panas'],
+        datasets: [{
+          value: 28,
+          data: [20, 30, 20],
+          backgroundColor: ['blue', 'green', 'red'],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        needle: {
+          radiusPercentage: 2,
+          widthPercentage: 3.2,
+          lengthPercentage: 80,
+          color: 'black'
+        },
+        valueLabel: {
+          formatter: (value) => value + '°C'
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    // Update simulasi suhu tiap 2 detik
+    setInterval(() => {
+      const newVal = Math.floor(Math.random() * 60);
+      chart.data.datasets[0].value = newVal;
+      chart.update();
+      document.getElementById("suhu").innerText = newVal + " °C";
+    }, 2000);
+  </script>
+</body>
+</html>

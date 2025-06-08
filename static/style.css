@@ -1,0 +1,162 @@
+/* Font dan dasar layout */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sidebar */
+.sidebar {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  background-color: #138deb;
+  width: 250px;
+}
+
+
+
+.sidebar h3 {
+  font-weight: 600;
+  color: #fff;
+}
+
+.sidebar .nav-link {
+  padding: 10px 15px;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #495057;
+  border-radius: 5px;
+}
+
+/* Main Content */
+main {
+  margin-left: 250px;
+  padding: 30px;
+  background-color: #f8f9fa;
+}
+
+/* Section Header */
+h1, h2 {
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: 12px;
+}
+
+.card .card-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Tabel */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table th, table td {
+  padding: 10px;
+  text-align: left;
+}
+
+table thead {
+  background-color: #007bff;
+  color: white;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Tombol */
+.btn {
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 500;
+}
+
+.btn-toggle {
+  font-weight: 600;
+}
+
+/* Form */
+.form-inline,
+.d-flex.gap-2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+input.form-control,
+select.form-select {
+  flex: 1;
+  min-width: 150px;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    height: auto;
+    width: 100%;
+  }
+
+  main {
+    margin-left: 0;
+    padding: 15px;
+  }
+}
+.circle-indicator {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  margin-top: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.bg-gradient-suhu {
+  background: radial-gradient(circle at center, #ff6b6b, #c0392b);
+}
+.nav-link.active {
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 8px;
+  font-weight: bold;
+}
+/* tampilan daya info */
+#daya-info {
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  max-width: fit-content;
+  margin: 1rem auto 0;
+  text-align: center;
+  letter-spacing: 0.05em;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+  transition: background 0.3s ease;
+}
+
+#daya-info:hover {
+  background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+  cursor: default;
+}

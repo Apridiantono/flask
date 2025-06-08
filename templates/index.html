@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AIRGO Dashboard</title>
+
+  <!-- Bootstrap & Chart.js -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/style.css" />
+
+</head>
+<body>
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <nav class="sidebar bg-primary text-white p-3" style="width: 250px;">
+      <h3 class="text-center mb-4">Menu</h3>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a href="/" class="nav-link text-white" onclick="navigateTo('home')">Home</a></li>
+        <li class="nav-item"><a href="inventaris" class="nav-link text-white" onclick="navigateTo('inventaris')">Inventaris</a></li>
+        <li class="nav-item"><a href="riwayat" class="nav-link text-white" onclick="navigateTo('riwayat')">Riwayat</a></li>
+        <li class="nav-item"><a href="#" class="nav-link text-white" onclick="navigateTo('kontak')">Kontak Person</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 p-4">
+
+      <!-- HOME -->
+      <section id="home">
+        <div class="container">
+          <h1 class="text-center mb-4 text-primary d-flex justify-content-center align-items-center gap-2">
+            <img src="/static/logo.png" alt="Logo AIRGO" style="height: 80px;" />AIRGO Monitoring System
+          </h1>
+
+          <div class="row text-center mb-4">
+            <div class="col">
+              <div class="card shadow" id="suhu-card">
+                <div class="card-body">
+                <h5 class="card-title">Suhu</h5>
+                <p id="suhu" class="card-text display-6">0 &deg;C</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card shadow"><div class="card-body"><h5 class="card-title">Kelembapan</h5><p id="kelembapan" class="card-text display-6">0 %</p></div></div>
+            </div>
+            <div class="col">
+              <div class="card shadow"><div class="card-body"><h5 class="card-title">Arus</h5><p id="arus" class="card-text display-6">0 A</p></div></div>
+            </div>
+            <div class="col">
+              <div class="card shadow"><div class="card-body"><h5 class="card-title">Ruangan</h5><p id="gerakan" class="card-text display-6">TIDAK ADA</p></div></div>
+            </div>
+          </div>
+
+          <h2 class="text-center mb-3">Kontrol Manual</h2>
+          <div class="row text-center">
+            <div class="col-md-4 mb-3"><button id="btn-lampu" class="btn btn-secondary w-100" onclick="toggleDevice('lampu')">Lampu: OFF</button></div>
+            <div class="col-md-4 mb-3"><button id="btn-kipas1" class="btn btn-secondary w-100" onclick="toggleDevice('kipas1')">Kipas 1: OFF</button></div>
+            <div class="col-md-4 mb-3"><button id="btn-kipas2" class="btn btn-secondary w-100" onclick="toggleDevice('kipas2')">Kipas 2: OFF</button></div>
+          </div>
+
+          <h2 class="text-center mb-3 mt-5">Diagram Pemakaian Arus</h2>
+          <div class="card p-3 shadow">
+            <canvas id="arusChart" height="100"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- INVENTARIS -->
+      <section id="inventaris" style="display:none;">
+        <h1>📦 Dashboard Inventaris</h1>
+
+        <h2>🏫 Data Kelas</h2>
+        <form method="POST" action="/tambah_kelas" class="d-flex gap-2 mb-3">
+          <input type="text" name="nama_kelas" placeholder="Nama Kelas" class="form-control" required />
+          <input type="text" name="wali_kelas" placeholder="Wali Kelas" class="form-control" required />
+          <button type="submit" class="btn btn-primary">+ Tambah Kelas</button>
+        </form>
+
+        <table class="table table-striped">
+          <thead>
+            <tr><th>ID</th><th>Nama Kelas</th><th>Wali Kelas</th><th>Aksi</th></tr>
+          </thead>
+          <tbody>
+            {% for k in kelas %}
+            <tr>
+              <td>{{ k[0] }}</td>
+              <td>{{ k[1] }}</td>
+              <td>{{ k[2] }}</td>
+              <td>
+                <a href="/edit_kelas/{{ k[0] }}" class="btn btn-sm btn-warning">✏️ Edit</a>
+                <a href="/hapus_kelas/{{ k[0] }}" class="btn btn-sm btn-danger">🗑 Hapus</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <h2 class="mt-5">📋 Data Barang</h2>
+        <form method="POST" action="/tambah_barang" class="d-flex gap-2 mb-3">
+          <input type="text" name="nama_barang" placeholder="Nama Barang" class="form-control" required />
+          <input type="number" name="jumlah" placeholder="Jumlah" class="form-control" required />
+          <input type="text" name="kondisi_barang" placeholder="Nama Barang" class="form-control" required />
+          <select name="id_kelas" class="form-select" required>
+            <option value="">Pilih Kelas</option>
+            {% for k in kelas %}
+            <option value="{{ k[0] }}">{{ k[1] }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn btn-primary">+ Tambah Barang</button>
+        </form>
+
+        <table class="table table-striped">
+          <thead>
+            <tr><th>ID</th><th>Nama Barang</th><th>Jumlah</th><th>Kelas</th><th>Aksi</th></tr>
+          </thead>
+          <tbody>
+            {% for b in barang %}
+            <tr>
+              <td>{{ b[0] }}</td>
+              <td>{{ b[1] }}</td>
+              <td>{{ b[2] }}</td>
+              <td>{{ b[3] or 'Belum dikaitkan' }}</td>
+              <td>
+                <a href="/edit_barang/{{ b[0] }}" class="btn btn-sm btn-warning">✏️ Edit</a>
+                <a href="/hapus_barang/{{ b[0] }}" class="btn btn-sm btn-danger">🗑 Hapus</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+
+      <!-- RIWAYAT SENSOR -->
+      <section id="riwayat" style="display:none;">
+        <h1>📊 Riwayat Sensor</h1>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Waktu</th>
+              <th>Suhu (°C)</th>
+              <th>Kelembapan (%)</th>
+              <th>Arus (A)</th>
+              <th>Ruangan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in log %}
+            <tr>
+              <td>{{ row['timestamp'] }}</td>
+              <td>{{ row['suhu'] }}</td>
+              <td>{{ row['kelembapan'] }}</td>
+              <td>{{ row['arus'] }}</td>
+              <td>{{ 'ADA ORANG' if row['gerakan'] else 'KOSONG' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+
+
+      <!-- KONTAK PERSON -->
+      <section id="kontak" style="display:none;">
+        <h1>📞 Kontak Person</h1>
+        <p>Informasi kontak person akan ditampilkan di sini.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

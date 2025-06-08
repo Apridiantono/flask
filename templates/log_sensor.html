@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Riwayat Sensor</title>
+</head>
+<body>
+    <h1>Riwayat Data Sensor 1 Hari Terakhir</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Waktu</th>
+                <th>Suhu (°C)</th>
+                <th>Kelembapan (%)</th>
+                <th>Arus (A)</th>
+                <th>Lampu</th>
+                <th>Kipas 1</th>
+                <th>Kipas 2</th>
+                <th>Gerakan</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in log %}
+            <tr>
+                <td>{{ row.timestamp }}</td>
+                <td>{{ row.suhu }}</td>
+                <td>{{ row.kelembapan }}</td>
+                <td>{{ row.arus }}</td>
+                <td>{{ row.lampu }}</td>
+                <td>{{ row.kipas1 }}</td>
+                <td>{{ row.kipas2 }}</td>
+                <td>{{ row.gerakan }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
